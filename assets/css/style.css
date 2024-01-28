@@ -1,0 +1,15 @@
+#today {
+    border:1px solid #dadada;
+}
+
+#headerLi {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: center;
+}
+
+#search-button {
+    height:71px;
+}
