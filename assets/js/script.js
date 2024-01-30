@@ -119,6 +119,7 @@ function toTitleCase(str) {
 function getPastSearches() {
   // Get city keys first
   var cityKeys = Object.keys(localStorage);
+  cityKeys.ramove(`bugsnag-anonymous-id`);
   console.log(cityKeys)
   //Get coordinates by city names
   for (var i=0; i < localStorage.length; i++) {
