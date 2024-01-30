@@ -119,7 +119,7 @@ function toTitleCase(str) {
 function getPastSearches() {
   // Get city keys first
   var cityKeys = Object.keys(localStorage);
-  cityKeys.remove(`bugsnag-anonymous-id`);
+  console.log(removeItemOnce(cityKeys,`bugsnag-anonymous-id`)) 
   console.log(cityKeys)
   //Get coordinates by city names
   for (var i=0; i < localStorage.length; i++) {
@@ -152,3 +152,23 @@ function getPastSearchInfo(event) {
 
 // Get past searches information when clicked
 $(document).on("click", ".past-search", getPastSearchInfo);
+
+function removeItemOnce(arr, value) {
+  var index = arr.indexOf(value);
+  if (index > -1) {
+    arr.splice(index, 1);
+  }
+  return arr;
+}
+
+function removeItemAll(arr, value) {
+  var i = 0;
+  while (i < arr.length) {
+    if (arr[i] === value) {
+      arr.splice(i, 1);
+    } else {
+      ++i;
+    }
+  }
+  return arr;
+}
