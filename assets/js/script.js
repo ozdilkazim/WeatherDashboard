@@ -32,7 +32,7 @@ function addPastSeachList(arr) {
 
 function fetchWeatherInfo() {
   // Convert city name to coordtinats using geo api
-  var queryUrlGeo = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`
+  var queryUrlGeo = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`
   fetch(queryUrlGeo).then(function (response) {
     console.log(response);
       return response.json();
@@ -70,7 +70,7 @@ function currentWeather(data) {
   var temp = data.current.temp.toFixed(`2`);
   var wind = data.current.wind_speed.toFixed(`2`);
   var humidity = data.current.humidity.toFixed();
-  var iconUrl = `http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`;
+  var iconUrl = `https://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`;
   var date = dayjs.unix(data.current.dt).format(`D[/]MM[/]YYYY`);  
   $("#city-name").text(`${city} (${date})`);
   $(`#temperature`).text(`Temperature : ${temp} °C`);
@@ -87,7 +87,7 @@ function futureWeather(data) {
     var wind5 = data.daily[i+1].wind_speed.toFixed(`2`);
     var humidity5 = data.daily[i+1].humidity.toFixed();
     var date5 = dayjs.unix(data.daily[i+1].dt).format(`D[/]MM[/]YYYY`);  
-    var iconUrl5 = `http://openweathermap.org/img/wn/${data.daily[i+1].weather[0].icon}@2x.png`;
+    var iconUrl5 = `https://openweathermap.org/img/wn/${data.daily[i+1].weather[0].icon}@2x.png`;
     var futureWeatherUl = $(`<ul class='col list-group list-group-flush'>`);
     var dateLi = $(`<li class='list-group-item date'>`);
     var temperatureLi = $(`<li class='list-group-item tempetature'>`);
