@@ -3,30 +3,32 @@ var cities = [];
 var apiKey = `71311474f5b26fb7bbfa0bc1985b90cd`;
 
 // Get past searches if applicaple
-getPastSearches();
 
 // Fetch informatin for default city
 city = `London`;
 fetchWeatherInfo();
+getPastSearches();
 
-$("#search-button").on("click", function (event) {
+$("#search-button").on("click", function (e) {
+  e.preventDefault();
   $("#forecast").empty();
   $("#history").empty();
-  event.preventDefault();
   // This line grabs the input from the textbox
   city = toTitleCase($("#search-input").val().trim());
+  console.log(city);
   addPastSeachList(city);
   fetchWeatherInfo();
   getPastSearches();
 });
 
 function addPastSeachList(arr) {
-  if (arr =``) {
-    alert=`City name cannot be blank!`;
-  } else {
-    var addToList = $("<button type='button' class='btn btn-light past-search' data-name='"+ arr +"'>");
+  if (arr) {
+    var addToList = $(`<button type='button' class='btn btn-light past-search' data-name='${arr}'>`);
     addToList.text(arr);
     $("#history").append(addToList);
+    console.log(arr)
+  } else {
+    alert=`City name cannot be blank!`;
   }
 }
 
@@ -51,7 +53,6 @@ function fetchWeatherInfo() {
     // Fetch new data due to coordinates we have
     var queryUrl = `https://api.openweathermap.org/data/2.5/onecall?units=metric&exclude=minutely,hourly&lat=${lat}&lon=${lon}&appid=${apiKey}`
     fetch(queryUrl).then(function (newResponse) {
-      console.log(newResponse);
       if (newResponse.ok) {
         newResponse.json()
         .then(function (newData) {
