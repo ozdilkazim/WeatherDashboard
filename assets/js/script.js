@@ -34,7 +34,6 @@ function fetchWeatherInfo() {
   // Convert city name to coordtinats using geo api
   var queryUrlGeo = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`
   fetch(queryUrlGeo).then(function (response) {
-    console.log(response);
       return response.json();
   }).then(function (data) {
     // Coordinates
@@ -57,7 +56,6 @@ function fetchWeatherInfo() {
         newResponse.json()
         .then(function (newData) {
         currentWeather(newData);
-        console.log(newData);
         });
       } else {
         alert(`Please enter a valid city name!`);
@@ -119,8 +117,8 @@ function toTitleCase(str) {
 function getPastSearches() {
   // Get city keys first
   var cityKeys = Object.keys(localStorage);
-  console.log(removeItemOnce(cityKeys,`bugsnag-anonymous-id`)) 
-  console.log(cityKeys)
+  removeItemOnce(cityKeys,`bugsnag-anonymous-id`)); 
+  console.log(cityKeys);
   //Get coordinates by city names
   for (var i=0; i < localStorage.length; i++) {
     cities[i] = JSON.parse(localStorage.getItem(cityKeys[i]));
@@ -153,22 +151,12 @@ function getPastSearchInfo(event) {
 // Get past searches information when clicked
 $(document).on("click", ".past-search", getPastSearchInfo);
 
+// Remove function githubs local storage value from past searches array
 function removeItemOnce(arr, value) {
+  // indecx of value
   var index = arr.indexOf(value);
   if (index > -1) {
     arr.splice(index, 1);
-  }
-  return arr;
-}
-
-function removeItemAll(arr, value) {
-  var i = 0;
-  while (i < arr.length) {
-    if (arr[i] === value) {
-      arr.splice(i, 1);
-    } else {
-      ++i;
-    }
   }
   return arr;
 }
