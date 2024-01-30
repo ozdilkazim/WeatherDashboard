@@ -3,11 +3,11 @@ var cities = [];
 var apiKey = `71311474f5b26fb7bbfa0bc1985b90cd`;
 
 // Get past searches if applicaple
+getPastSearches();
 
 // Fetch informatin for default city
 city = `London`;
 fetchWeatherInfo();
-getPastSearches();
 
 $("#search-button").on("click", function (e) {
   e.preventDefault();
