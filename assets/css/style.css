@@ -10,8 +10,6 @@
     align-items: center;
 }
 
-#search-button {
-
 #forecast {
     justify-content: center;
     padding:5px;
@@ -36,4 +34,9 @@
     font-weight: bold;
     font-size: 20px;
     text-align: center;
+}
+
+.past-search {
+    border:1px solid #999;
+    margin-top:10px;
 }
