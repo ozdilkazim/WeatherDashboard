@@ -1,89 +1,104 @@
 // Create cities array
+var city = `London`;
 var cities = [];
 var apiKey = `71311474f5b26fb7bbfa0bc1985b90cd`;
 
-// Fetch weather info 
-// var city = $(`#search-input`).val();
-var city = `London`;
-console.log(city);
+// Fetch weather info for London (default city)
+fetchWeatherInfo();
+//var city = `London`;
+$("#search-button").on("click", function (event) {
+  $("#forecast").empty();
+  event.preventDefault();
+  // This line grabs the input from the textbox
+  city = toTitleCase($("#search-input").val().trim());
+  fetchWeatherInfo();
+});
+
 
 function fetchWeatherInfo() {
     // Convert city name to coordtinats using geo api
     var queryUrlGeo = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`
     fetch(queryUrlGeo)
       .then(function (response) {
-        return response.json();
-      })
-      .then(function (data) {
-        // Coordinates
-        var lat = data[0].lat;
-        var lon = data[0].lon;
-        
-        // Save city name and coordinates to local storage
-        var coordinates = lat + ` ` + lon;
-        localStorage.setItem(city, coordinates);
 
-        // Fetch new data due to coordinates we have
-        var queryUrl = `https://api.openweathermap.org/data/2.5/onecall?units=metric&exclude=minutely,hourly&lat=${lat}&lon=${lon}&appid=${apiKey}`
-        fetch(queryUrl)
-        .then(function (newResponse) {
-          return newResponse.json();
-        })
-        .then(function (newData) {
-          console.log(newData);
-          currentWeather(newData);
-          futureWeather(newData);
-        });
-      })
-}
+        if (response.ok) {
+          response.json().          
+          then(function (data) {
+            // Coordinates
+            var lat = data[0].lat;
+            var lon = data[0].lon;
+            
+            // Save city name and coordinates to local storage
+            var coordinates = lat + ` ` + lon;
+            localStorage.setItem(city, coordinates);
+    
+            // Fetch new data due to coordinates we have
+            var queryUrl = `https://api.openweathermap.org/data/2.5/onecall?units=metric&exclude=minutely,hourly&lat=${lat}&lon=${lon}&appid=${apiKey}`
+            fetch(queryUrl)
+            .then(function (newResponse) {
+              if (response.ok) {
+                newResponse.json()
+                .then(function (newData) {
+                currentWeather(newData);
+                console.log(newData);
+                });
+              }
+            });
+          });
 
-fetchWeatherInfo() 
-function currentWeather(newData) {
-  var temp = newData.current.temp.toFixed(`2`);
-  var wind = newData.current.wind_speed.toFixed(`2`);
-  var humidity = newData.current.humidity.toFixed();
-  var date = dayjs.unix(newData.current.dt).format(`D[/]MM[/]YYYY`);  
-  var iconUrl = `http://openweathermap.org/img/wn/${newData.current.weather[0].icon}@2x.png`;
+        } else {
+
+          alert(`Error, please enter correct city name!`);
+
+        }
+      });
+    }
+
+function currentWeather(data) {
+  var temp = data.current.temp.toFixed(`2`);
+  var wind = data.current.wind_speed.toFixed(`2`);
+  var humidity = data.current.humidity.toFixed();
+  var date = dayjs.unix(data.current.dt).format(`D[/]MM[/]YYYY`);  
+  var iconUrl = `http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`;
   $(`#city-name`).text(`${city} (${date})`);
   $(`#temperature`).text(`Temperature : ${temp} °C`);
-  $(`#wind`).text(`Wind Speed : ${wind} kmh`);
+  $(`#wind`).text(`Wind : ${wind} kph`);
   $(`#humidity`).text(`Humidity : ${humidity}%`);
   $(`#icon`).attr(`src`, iconUrl);
+  futureWeather(data);
 }
 
-$(`#search-button`).on(`click`, function () {
-  fetchWeatherInfo();
-})
-
 // Future Weather Information 
-function futureWeather(newData) {
+function futureWeather(data) {
   for (var i = 0; i< 5 ; i++) {
-    var temp5 = newData.daily[i+1].temp.day.toFixed(`2`);
-    var wind5 = newData.daily[i+1].wind_speed.toFixed(`2`);
-    var humidity5 = newData.daily[i+1].humidity.toFixed();
-    var date5 = dayjs.unix(newData.daily[i+1].dt).format(`D[/]MM[/]YYYY`);  
-    var iconUrl5 = `http://openweathermap.org/img/wn/${newData.daily[i+1].weather[0].icon}@2x.png`;
-    var futureWeatherDiv = $(`<div>`);
-    var futureWeatherUl = $(`<ul>`);
-    var cityNameLi = $(`<li class='city-name 5dayforecast'>`);
-    var temperatureLi = $(`<li class='tempetature 5dayforecast'>`);
-    var windLi = $(`<li class='wind 5dayforecast'>`);
-    var humidityLi = $(`<li class='humidity 5dayforecast'>`);
-    cityNameLi.text(date5);
+    var temp5 = data.daily[i+1].temp.day.toFixed(`2`);
+    var wind5 = data.daily[i+1].wind_speed.toFixed(`2`);
+    var humidity5 = data.daily[i+1].humidity.toFixed();
+    var date5 = dayjs.unix(data.daily[i+1].dt).format(`D[/]MM[/]YYYY`);  
+    var iconUrl5 = `http://openweathermap.org/img/wn/${data.daily[i+1].weather[0].icon}@2x.png`;
+    var futureWeatherUl = $(`<ul class='col list-group list-group-flush'>`);
+    var dateLi = $(`<li class='list-group-item date'>`);
+    var temperatureLi = $(`<li class='list-group-item tempetature'>`);
+    var windLi = $(`<li class='list-group-item wind'>`);
+    var humidityLi = $(`<li class='list-group-item humidity'>`);
+    dateLi.text(date5);
     temperatureLi.text(`Temperature : ${temp5} °C`);
-    windLi.text(`Wind Speed : ${wind5} kmh`);
+    windLi.text(`Wind : ${wind5} kph`);
     humidityLi.text(`Humidity : ${humidity5}%`);
     var d5ayicon = $(`<img>`)
     d5ayicon.attr(`src`, iconUrl5);
-    $(`#forecast`).append(futureWeatherDiv);
-    futureWeatherDiv.append(futureWeatherUl);
-    futureWeatherUl.append(cityNameLi,temperatureLi,windLi,humidityLi);
+    $(`#forecast`).append(futureWeatherUl);
+    futureWeatherUl.append(dateLi,temperatureLi,windLi,humidityLi);
+    dateLi.append(d5ayicon)
   } 
-  
-  
-  
-  // dayjs.unix(newData.list[i].dt).format(`D[/]MM[/]YYYY`);  
 }
-$(`#search-button`).on(`click`, function () {
-  fetchWeatherInfo();
-})
+
+// Function to uppercase first letters
+function toTitleCase(str) {
+  return str.replace(
+    /\w\S*/g,
+    function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    }
+  );
+}

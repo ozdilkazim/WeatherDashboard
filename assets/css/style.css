@@ -11,5 +11,29 @@
 }
 
 #search-button {
-    height:71px;
+
+#forecast {
+    justify-content: center;
+    padding:5px;
+}
+
+#forecast > ul {
+    padding-right:0;
+    margin-right:10px;
+}
+
+#forecast > ul:last-child {
+    margin-right:0px;
+}
+
+#forecast > ul > li {
+    color:#fff;
+    background-color:#181033;
+    border-width: 0;
+}
+
+#forecast > ul > li.date {
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
 }
