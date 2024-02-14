@@ -15,7 +15,6 @@ $("#search-button").on("click", function (e) {
   $("#history").empty();
   // This line grabs the input from the textbox
   city = toTitleCase($("#search-input").val().trim());
-  console.log(city);
   addPastSeachList(city);
   fetchWeatherInfo();
   getPastSearches();
@@ -26,7 +25,6 @@ function addPastSeachList(arr) {
     var addToList = $(`<button type='button' class='btn btn-light past-search' data-name='${arr}'>`);
     addToList.text(arr);
     $("#history").append(addToList);
-    console.log(arr)
   } else {
     alert=`City name cannot be blank!`;
   }
