@@ -118,11 +118,10 @@ function getPastSearches() {
   // Get city keys first
   var cityKeys = Object.keys(localStorage);
   removeItemOnce(cityKeys,`bugsnag-anonymous-id`); 
-  console.log(cityKeys);
+  
   //Get coordinates by city names
   for (var i=0; i < cityKeys.length; i++) {
     cities[i] = JSON.parse(localStorage.getItem(cityKeys[i]));
-    console.log('Sehirler' + JSON.stringify(cities[i]))
     var pastSearchButton = $("<button type='button' class='btn btn-light past-search' data-name='"+ cityKeys[i] +"'>");
     pastSearchButton.text(cityKeys[i]);
     $("#history").append(pastSearchButton);
