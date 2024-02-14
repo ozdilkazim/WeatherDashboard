@@ -120,7 +120,7 @@ function getPastSearches() {
   removeItemOnce(cityKeys,`bugsnag-anonymous-id`); 
   console.log(cityKeys);
   //Get coordinates by city names
-  for (var i=0; i < localStorage.length; i++) {
+  for (var i=0; i < localStorage.length-1; i++) {
     cities[i] = JSON.parse(localStorage.getItem(cityKeys[i]));
     var pastSearchButton = $("<button type='button' class='btn btn-light past-search' data-name='"+ cityKeys[i] +"'>");
     pastSearchButton.text(cityKeys[i]);
