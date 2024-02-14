@@ -15,7 +15,8 @@ $("#search-button").on("click", function (e) {
   $("#history").empty();
   // This line grabs the input from the textbox
   city = toTitleCase($("#search-input").val().trim());
-  addPastSeachList(city);
+  if (city) {
+  addPastSeachList(city);}
   fetchWeatherInfo();
   getPastSearches();
 });
